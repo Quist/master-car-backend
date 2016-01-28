@@ -10,7 +10,6 @@ class RequestHandler implements HttpHandler{
 		System.out.println("Received request: " + exchange.getRequestURI());
 		System.out.println("Remote address: " + exchange.getRemoteAddress());
 
-		
 		String response = "Hei du ;))";
 		exchange.sendResponseHeaders(200, response.length());
 		OutputStream outputStream = exchange.getResponseBody();
