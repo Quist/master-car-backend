@@ -11,9 +11,11 @@ class Server {
         }
         int port = Integer.parseInt(args[0]);
 
-		HttpServer server = HttpServer.create(new InetSocketAddress(3000), 0);
+		HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 		server.createContext("/angela.txt", new RequestHandler());
 		server.setExecutor(null);
+
+		System.out.println("Server listening on port " + port);
 		server.start();
 	}
 }
