@@ -78,6 +78,9 @@ public class CarHandler implements HttpHandler {
 
     private void sendNotFound(HttpExchange exchange) throws IOException {
         exchange.sendResponseHeaders(404, 0);
+        OutputStream outputStream = exchange.getResponseBody();
+        outputStream.write("".getBytes());
+        outputStream.close();
     }
 
     private boolean uriHasId(String[] paths) {
