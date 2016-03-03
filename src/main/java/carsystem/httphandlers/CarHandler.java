@@ -22,7 +22,7 @@ public class CarHandler implements HttpHandler {
     }
 
     public void handle(HttpExchange httpExchange) throws IOException {
-        System.out.println("Received HTTP " + httpExchange.getRequestMethod());
+        System.out.println("Received HTTP " + httpExchange.getRequestMethod() + " on URI " + httpExchange.getRequestURI());
         String method = httpExchange.getRequestMethod();
         switch (method) {
             case "GET":
