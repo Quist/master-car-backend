@@ -8,4 +8,8 @@ public class Car {
         this.type = type;
         this.registration = registration;
     }
+
+    public String getRegistration() {
+        return registration;
+    }
 }
