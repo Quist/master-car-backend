@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class CarHandler implements HttpHandler {
 
@@ -31,13 +32,52 @@ public class CarHandler implements HttpHandler {
             case "POST":
                 handlePost(httpExchange);
                 break;
+            case "DELETE" :
+                handleDelete(httpExchange);
+                break;
+            case "PUT" :
+                handlePut(httpExchange);
+                break;
             default:
+                System.out.println("Unsupported method");
                 throw new UnsupportedOperationException();
         }
     }
 
+    private void handlePut(HttpExchange httpExchange) throws IOException {
+        String body = readRequestBody(httpExchange);
+        Car car = null;
+        try{
+            car = new Gson().fromJson(body, Car.class);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            carService.updateCar(car);
+            httpExchange.sendResponseHeaders(204, 0);
+            OutputStream outputStream = httpExchange.getResponseBody();
+            outputStream.close();
+        } catch (NoSuchElementException e) {
+            sendNotFound(httpExchange);
+        }
+
+    }
+
+    private void handleDelete(HttpExchange httpExchange) throws IOException {
+        String carId = getCarId(httpExchange.getRequestURI());
+        Car car = carService.getCar(carId);
+        if(car == null) {
+            sendNotFound(httpExchange);
+        } else {
+            carService.removeCar(car);
+            httpExchange.sendResponseHeaders(204, 0);
+            OutputStream outputStream = httpExchange.getResponseBody();
+            outputStream.close();
+        }
+    }
+
     private void handlePost(HttpExchange httpExchange) throws IOException {
-        System.out.println("Handling post");
         String body = readRequestBody(httpExchange);
 
         Car car = null;
@@ -54,12 +94,11 @@ public class CarHandler implements HttpHandler {
     }
 
     private void handleGetCar(HttpExchange exchange) throws IOException {
-        URI uri = exchange.getRequestURI();
-        String paths[] =  uri.getPath().split("/");
 
+        String carId = getCarId(exchange.getRequestURI());
         String payload;
-        if (uriHasId(paths)) {
-            Car car = carService.getCar(paths[2]);
+        if (carId != null) {
+            Car car = carService.getCar(carId);
             if (car == null) {
                 sendNotFound(exchange);
                 return;
@@ -83,12 +122,13 @@ public class CarHandler implements HttpHandler {
         outputStream.close();
     }
 
-    private boolean uriHasId(String[] paths) {
-        if (paths.length > 2) {
-            return true;
-        } else {
-            return false;
+    private String getCarId(URI uri) {
+        String paths[] =  uri.getPath().split("/");
+        if (paths.length <= 2) {
+            return null;
         }
+
+        return paths[2];
     }
 
     private String readRequestBody(HttpExchange httpExchange) throws IOException {

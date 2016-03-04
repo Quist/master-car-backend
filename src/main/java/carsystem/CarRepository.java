@@ -18,4 +18,8 @@ public class CarRepository {
         System.out.println("Adding car to repository");
         cars.add(car);
     }
+
+    public void removeCar(Car car) {
+        cars.remove(car);
+    }
 }
