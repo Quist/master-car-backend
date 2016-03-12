@@ -14,9 +14,10 @@ public class CarRepository {
         return cars;
     }
 
-    public void addCar(Car car) {
+    public Car addCar(Car car) {
         System.out.println("Adding car to repository");
         cars.add(car);
+        return car;
     }
 
     public void removeCar(Car car) {

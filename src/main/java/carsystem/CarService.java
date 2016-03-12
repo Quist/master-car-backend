@@ -7,15 +7,14 @@ public class CarService {
 
     public CarService(CarRepository carRepository) {
         this.repository = carRepository;
-        repository.addCar(new Car("BMW", "a134123"));
     }
 
     public List<Car> getCars() {
         return repository.getCars();
     }
 
-    public void addCar(Car car) {
-        repository.addCar(car);
+    public Car addCar(Car car) {
+        return repository.addCar(car);
     }
 
     public Car getCar(String id) {

@@ -86,10 +86,12 @@ public class CarHandler implements HttpHandler {
         } catch(Exception e) {
             e.printStackTrace();
         }
-        carService.addCar(car);
+        Car carResult = carService.addCar(car);
+        String payload = new Gson().toJson(carResult);
 
-        httpExchange.sendResponseHeaders(201, 0);
+        httpExchange.sendResponseHeaders(201, payload.length());
         OutputStream outputStream = httpExchange.getResponseBody();
+        outputStream.write(payload.getBytes());
         outputStream.close();
     }
 
