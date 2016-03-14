@@ -28,4 +28,9 @@ public class CarRepository {
     public void removeCar(Car car) {
         cars.remove(car);
     }
+
+    public void removeCars() {
+        logger.info("Removing all cars");
+        cars.clear();
+    }
 }

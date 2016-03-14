@@ -47,4 +47,8 @@ public class CarService {
         }
 
     }
+
+    public void removeCars() {
+        repository.removeCars();
+    }
 }

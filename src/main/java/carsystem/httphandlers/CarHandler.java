@@ -69,6 +69,14 @@ public class CarHandler implements HttpHandler {
 
     private void handleDelete(HttpExchange httpExchange) throws IOException {
         String carId = getCarId(httpExchange.getRequestURI());
+        if (carId == null) {
+            handleDeleteAll(httpExchange);
+        } else {
+            handleDeleteSpecific(httpExchange, carId);
+        }
+    }
+
+    private void handleDeleteSpecific(HttpExchange httpExchange, String carId) throws IOException {
         Car car = carService.getCar(carId);
         if(car == null) {
             sendNotFound(httpExchange);
@@ -78,6 +86,13 @@ public class CarHandler implements HttpHandler {
             OutputStream outputStream = httpExchange.getResponseBody();
             outputStream.close();
         }
+    }
+
+    private void handleDeleteAll(HttpExchange httpExchange) throws IOException {
+        carService.removeCars();
+        httpExchange.sendResponseHeaders(204, -1);
+        OutputStream outputStream = httpExchange.getResponseBody();
+        outputStream.close();
     }
 
     private void handlePost(HttpExchange httpExchange) throws IOException {
