@@ -1,8 +1,13 @@
 package carsystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
 public class CarService {
+    final static Logger logger = LoggerFactory.getLogger(CarService.class);
+
     private final CarRepository repository;
 
     public CarService(CarRepository carRepository) {
@@ -20,11 +25,11 @@ public class CarService {
     public Car getCar(String id) {
         for (Car car: repository.getCars()) {
             if (car.getRegistration().equals(id)) {
-                System.out.println("Found car with registration: " + id);
+                logger.debug("Found car with registration: " + id);
                 return car;
             }
         }
-        System.out.println("Did not find car with registration: " + id);
+        logger.debug("Did not find car with registration: " + id);
         return null;
     }
 

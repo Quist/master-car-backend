@@ -5,6 +5,8 @@ import carsystem.CarService;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class CarHandler implements HttpHandler {
+    final static Logger logger = LoggerFactory.getLogger(CarHandler.class);
 
     private final CarService carService;
 
@@ -23,7 +26,7 @@ public class CarHandler implements HttpHandler {
     }
 
     public void handle(HttpExchange httpExchange) throws IOException {
-        System.out.println("Received HTTP " + httpExchange.getRequestMethod() + " on URI " + httpExchange.getRequestURI());
+        logger.debug("Received HTTP " + httpExchange.getRequestMethod() + " on URI " + httpExchange.getRequestURI());
         String method = httpExchange.getRequestMethod();
         switch (method) {
             case "GET":
@@ -39,7 +42,7 @@ public class CarHandler implements HttpHandler {
                 handlePut(httpExchange);
                 break;
             default:
-                System.out.println("Unsupported method");
+                logger.error("Unsupported method");
                 throw new UnsupportedOperationException();
         }
     }

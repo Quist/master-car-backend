@@ -1,9 +1,14 @@
 package carsystem;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CarRepository {
+    final static Logger logger = LoggerFactory.getLogger(CarRepository.class);
+
     private ArrayList<Car> cars;
 
     public CarRepository() {
@@ -15,7 +20,7 @@ public class CarRepository {
     }
 
     public Car addCar(Car car) {
-        System.out.println("Adding car to repository");
+        logger.debug("Adding car to repository");
         cars.add(car);
         return car;
     }

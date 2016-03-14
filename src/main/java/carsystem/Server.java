@@ -5,12 +5,15 @@ import java.io.IOException;
 import carsystem.httphandlers.RequestHandler;
 import com.sun.net.httpserver.HttpServer;
 import carsystem.httphandlers.CarHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
 class Server {
-	public static void main(String args[]) {
-		System.out.println("Hei verden!");
+    final static Logger logger = LoggerFactory.getLogger(Server.class);
+
+    public static void main(String args[]) {
         if (args.length < 1) {
             System.out.println("Usage: server port");
             System.exit(1);
@@ -19,17 +22,17 @@ class Server {
 
         CarService carService = new CarService(new CarRepository());
 
-        HttpServer server = null; 
+        HttpServer server = null;
         try {
-			server = HttpServer.create(new InetSocketAddress(port), 0);
+            server = HttpServer.create(new InetSocketAddress(port), 0);
         } catch(IOException e){
-        	e.printStackTrace();
+            e.printStackTrace();
         }
-		server.createContext("/angela.txt", new RequestHandler());
+        server.createContext("/angela.txt", new RequestHandler());
         server.createContext("/cars", new CarHandler(carService));
-		server.setExecutor(null);
+        server.setExecutor(null);
 
-		System.out.println("carsystem.Server listening on port " + port);
-		server.start();
-	}
+        logger.info("carsystem.Server listening on port " + port);
+        server.start();
+    }
 }
