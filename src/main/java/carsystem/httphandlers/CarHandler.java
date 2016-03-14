@@ -58,7 +58,7 @@ public class CarHandler implements HttpHandler {
 
         try {
             carService.updateCar(car);
-            httpExchange.sendResponseHeaders(204, 0);
+            httpExchange.sendResponseHeaders(204, -1);
             OutputStream outputStream = httpExchange.getResponseBody();
             outputStream.close();
         } catch (NoSuchElementException e) {
@@ -74,7 +74,7 @@ public class CarHandler implements HttpHandler {
             sendNotFound(httpExchange);
         } else {
             carService.removeCar(car);
-            httpExchange.sendResponseHeaders(204, 0);
+            httpExchange.sendResponseHeaders(204, -1);
             OutputStream outputStream = httpExchange.getResponseBody();
             outputStream.close();
         }
