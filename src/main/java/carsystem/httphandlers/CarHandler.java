@@ -3,6 +3,7 @@ package carsystem.httphandlers;
 import carsystem.Car;
 import carsystem.CarService;
 import com.google.gson.Gson;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.slf4j.Logger;
@@ -27,6 +28,15 @@ public class CarHandler implements HttpHandler {
 
     public void handle(HttpExchange httpExchange) throws IOException {
         logger.debug("Received HTTP " + httpExchange.getRequestMethod() + " on URI " + httpExchange.getRequestURI());
+
+        Headers headers = httpExchange.getRequestHeaders();
+        String authKey = headers.getFirst("Dil-auth");
+        if (authKey == null || ! authKey.equals("1337")) {
+            logger.warn("Client does not provide header dil-auth");
+            sendNotAuthorized(httpExchange);
+            return;
+        }
+
         String method = httpExchange.getRequestMethod();
         switch (method) {
             case "GET":
@@ -138,6 +148,13 @@ public class CarHandler implements HttpHandler {
     private void sendNotFound(HttpExchange exchange) throws IOException {
         exchange.sendResponseHeaders(404, 0);
         OutputStream outputStream = exchange.getResponseBody();
+        outputStream.write("".getBytes());
+        outputStream.close();
+    }
+
+    private void sendNotAuthorized(HttpExchange httpExchange) throws IOException {
+        httpExchange.sendResponseHeaders(401, 0);
+        OutputStream outputStream = httpExchange.getResponseBody();
         outputStream.write("".getBytes());
         outputStream.close();
     }
