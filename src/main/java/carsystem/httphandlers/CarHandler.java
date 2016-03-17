@@ -37,6 +37,9 @@ public class CarHandler implements HttpHandler {
             return;
         }
 
+        httpExchange.getResponseHeaders().set("dil-test", "xxx");
+
+
         String method = httpExchange.getRequestMethod();
         switch (method) {
             case "GET":
