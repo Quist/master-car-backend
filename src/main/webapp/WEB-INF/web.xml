@@ -1,0 +1,10 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+    <servlet>
+        <servlet-name>comingsoon</servlet-name>
+        <servlet-class>carsystem.httphandlers.CarHandler</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>comingsoon</servlet-name>
+    <url-pattern>/cars/*</url-pattern>
+    </servlet-mapping>
+</web-app>

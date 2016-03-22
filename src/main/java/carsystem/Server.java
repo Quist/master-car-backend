@@ -29,7 +29,7 @@ class Server {
             e.printStackTrace();
         }
         server.createContext("/angela.txt", new RequestHandler());
-        server.createContext("/cars", new CarHandler(carService));
+//        server.createContext("/cars", new CarHandler(carService));
         server.setExecutor(null);
 
         logger.info("carsystem.Server listening on port " + port);
